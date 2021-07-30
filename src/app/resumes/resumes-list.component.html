@@ -1,0 +1,12 @@
+<ul *ngIf="(appService.resumes$ | async).length; else emptyData">
+	<li *ngFor="let resume of appService.resumes$ | async">
+		<span class="resume-id">Resume Id: {{resume.id}}</span>
+		<p class="json">{{resume | json}}</p>
+		<a class="btn btn-secondary btn-sm" [routerLink]="['/resumes', resume.id]">View Resume</a>
+		<button class="btn btn-danger btn-sm" (click)="deleteResume(resume)">Delete Resume</button>
+	</li>
+</ul>
+
+<ng-template #emptyData>
+	<h1 class="h1 text-center">Please create resume.</h1>
+</ng-template>

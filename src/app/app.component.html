@@ -1,0 +1,20 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<ul class="nav">
+				<li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+					<a class="nav-link" routerLink="/">Home</a>
+				</li>
+				<li class="nav-item" routerLinkActive="active">
+					<a class="nav-link" routerLink="/resumes">Resumes List</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="row justify-content-center">
+	<div class="col-xs-12 col-sm-10 col-md-8">
+		<router-outlet></router-outlet>
+	</div>
+</div>

@@ -1,0 +1,192 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+
+			<h1 class="text-center">Resume for test app</h1>
+
+			<form [formGroup]="resumeForm" (ngSubmit)="createResume()">
+
+				<!-- G E N E R A L   I N F O -->
+				<fieldset formGroupName="generalInfo">
+
+					<legend>General Info</legend>
+
+					<!-- First & Last name -->
+					<div class="form-group">
+						<label for="fullname">First & Last name:</label>
+						<input type="text" id="fullname" class="form-control" formControlName="fullName">
+						<span
+							*ngIf="!resumeForm.get('generalInfo.fullName').valid && resumeForm.get('generalInfo.fullName').touched"
+							class="error-message">Please enter a full name!
+						</span>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-md-6">
+
+							<!-- Email -->
+							<div class="form-group">
+								<label for="email">Email:</label>
+								<input type="email" id="email" class="form-control" formControlName="email">
+								<span
+									*ngIf="!resumeForm.get('generalInfo.email').valid && resumeForm.get('generalInfo.email').touched"
+									class="error-message">Please enter a valid email!
+								</span>
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-md-6">
+
+							<!-- Phone number -->
+							<div class="form-group">
+								<label for="phone">Phone number:</label>
+								<input type="number" id="phone" class="form-control" formControlName="phone">
+								<span
+									*ngIf="!resumeForm.get('generalInfo.phone').valid && resumeForm.get('generalInfo.phone').touched"
+									class="error-message">Please enter a valid phone number!
+								</span>
+							</div>
+
+						</div>
+					</div>
+				</fieldset>
+
+				<!-- E X P E R I E N C E   ( C O M P A N I E S ) -->
+				<fieldset formArrayName="companies">
+
+					<legend>Work experience</legend>
+
+					<div *ngFor="let _ of companies().controls; let i = index">
+						<!-- Company -->
+						<ng-container [formGroupName]="i">
+							<div class="row">
+
+								<div class="col-xs-12 col-md-6">
+									<!-- Company Name -->
+									<div class="form-group">
+										<label for="companyName">Company Name:</label>
+										<input type="text" id="companyName" class="form-control"
+										       formControlName="companyName">
+										<span
+											*ngIf="companies().controls[i].get('companyName').errors?.required && companies().controls[i].get('companyName').touched"
+											class="error-message">Please enter a company name!
+										</span>
+									</div>
+								</div>
+
+								<div class="col-xs-12 col-md-6">
+									<!-- Position -->
+									<div class="form-group">
+										<label for="position">Position:</label>
+										<input type="text" id="position" class="form-control"
+										       formControlName="position">
+										<span
+											*ngIf="companies().controls[i].get('position').errors?.required && companies().controls[i].get('position').touched"
+											class="error-message">Please enter a position!
+										</span>
+									</div>
+								</div>
+
+								<div class="col-xs-12 col-md-6">
+									<!-- Start Date -->
+									<div class="form-group">
+										<label for="start">Start date:</label>
+										<input type="date" id="start" class="form-control" formControlName="startDate">
+									</div>
+									<span
+										*ngIf="companies().controls[i].get('startDate').errors?.required && companies().controls[i].get('startDate').touched"
+										class="error-message">Please enter a start date!
+									</span>
+								</div>
+
+								<div class="col-xs-12 col-md-6">
+									<!-- End Date -->
+									<div class="form-group">
+										<label for="end">End date:</label>
+										<input type="date" id="end" class="form-control" formControlName="endDate">
+									</div>
+								</div>
+
+							</div>
+
+							<!-- Achievements -->
+							<div class="form-group">
+								<label for="achievements">Achievements:</label>
+								<textarea id="achievements" minlength="100" maxlength="240" class="form-control"
+								          formControlName="achievements"></textarea>
+								<span
+									*ngIf="companies().controls[i].get('achievements').errors?.required && companies().controls[i].get('achievements').touched"
+									class="error-message">Please enter your achievements in this company!
+									</span>
+								<span
+									*ngIf="companies().controls[i].get('achievements').errors?.minlength"
+									class="error-message">
+										You've typed {{companies().controls[i].get('achievements').errors?.minlength['actualLength']}}
+									Required minimum length is {{companies().controls[i].get('achievements').errors?.minlength['requiredLength']}}
+								</span>
+							</div>
+
+							<fieldset formArrayName="technologies">
+
+								<div *ngFor="let _ of technologies(i).controls; let techIndex = index">
+									<!-- Technology -->
+									<ng-container [formGroupName]="techIndex">
+
+										<div class="row">
+
+											<div class="col-xs-12 col-md-6">
+												<!-- Technology Name -->
+												<div class="form-group">
+													<label for="technologyName">Technology Name:</label>
+													<input type="text" id="technologyName" class="form-control"
+													       formControlName="name">
+													<span
+														*ngIf="technologies(i).controls[techIndex].get('name').errors?.required && technologies(i).controls[techIndex].get('name').touched"
+														class="error-message">Please enter a technology name!
+													</span>
+												</div>
+											</div>
+
+											<div class="col-xs-12 col-md-6">
+												<!-- Technology Version -->
+												<div class="form-group">
+													<label for="technologyVersion">Technology Version:</label>
+													<input type="text" id="technologyVersion" class="form-control"
+													       formControlName="version">
+												</div>
+											</div>
+
+											<div class="col">
+												<button class="btn btn-outline-danger btn-sm" type="button"
+												        (click)="removeTechnology(techIndex)">Remove Technology
+												</button>
+											</div>
+										</div>
+									</ng-container>
+								</div>
+
+								<button class="btn btn-outline-secondary btn-sm" type="button"
+								        (click)="addTechnology(i)">Add Technology
+								</button>
+
+							</fieldset>
+
+							<button class="btn btn-danger" type="button" (click)="removeCompany(i)">
+								Remove Company
+							</button>
+
+						</ng-container>
+					</div>
+
+					<button class="btn btn-secondary" type="button" (click)="addCompany()">Add New Company
+					</button>
+
+				</fieldset>
+
+				<button class="btn btn-primary" type="submit" [disabled]="!resumeForm.valid">Create Resume</button>
+			</form>
+
+		</div>
+	</div>
+</div>
